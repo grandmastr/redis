@@ -24,7 +24,7 @@ const sendPongResponse = (socket, data) => {
 
   let resp;
 
-  switch (cmd) {
+  switch (cmd.toLowerCase()) {
     case 'ping':
       resp = `${PREFIXES.STRING}PONG`;
       break;
@@ -32,14 +32,21 @@ const sendPongResponse = (socket, data) => {
       resp = `${PREFIXES.STRING}${args[1]}`;
       break;
     case 'set':
-      const [_, key, __, value] = args;
+      const [$1, key, $2, value, $3, cmd2, $4, timeout] = args;
+
       if (!database.has(key)) {
-        database.set(key, value)
+        database.set(key, value);
         resp = '+OK';
+
+        if (cmd2 && timeout) {
+          setTimeout(() => {
+            database.delete(key);
+          }, timeout);
+        }
       }
       break;
     case 'get':
-      const [___, _key] = args;
+      const [$5, _key] = args;
       if (database.has(_key)) {
         const value = database.get(_key);
         resp = `$${value.length}\r\n${value}`;
