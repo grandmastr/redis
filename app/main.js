@@ -32,7 +32,7 @@ const sendPongResponse = (socket, data) => {
       resp = `${PREFIXES.STRING}${args[1]}`;
       break;
     case 'set':
-      const [$1, key, $2, value, $3, cmd2, $4, timeout] = args;
+      const [, key, , value, , cmd2, , timeout] = args;
 
       if (!database.has(key)) {
         database.set(key, value);
@@ -41,12 +41,12 @@ const sendPongResponse = (socket, data) => {
         if (cmd2 && timeout) {
           setTimeout(() => {
             database.delete(key);
-          }, timeout);
+          }, Number(timeout));
         }
       }
       break;
     case 'get':
-      const [$5, _key] = args;
+      const [, _key] = args;
       if (database.has(_key)) {
         const value = database.get(_key);
         resp = `$${value.length}\r\n${value}`;
@@ -59,17 +59,4 @@ const sendPongResponse = (socket, data) => {
   }
 
   socket.write(`${resp}\r\n`);
-};
-
-const getPrefix = response => {
-  const type = typeof response;
-
-  switch (type) {
-    case 'string':
-      return PREFIXES.STRING;
-    case 'number':
-      return PREFIXES.INTEGER;
-    default:
-      return '';
-  }
 };

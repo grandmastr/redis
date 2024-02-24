@@ -1,34 +1,29 @@
-[![progress-banner](https://backend.codecrafters.io/progress/redis/d1e7e9e1-90ce-490c-8419-1cf08f355f22)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# Simple Redis Implementation
 
-This is a starting point for JavaScript solutions to the
-["Build Your Own Redis" Challenge](https://codecrafters.io/challenges/redis).
+This project is a simple implementation of Redis in JavaScript. It uses Node.js and the `net` module to create a TCP server that can handle Redis commands.
 
-In this challenge, you'll build a toy Redis clone that's capable of handling
-basic commands like `PING`, `SET` and `GET`. Along the way we'll learn about
-event loops, the Redis protocol and more.
+## Features
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+- **Bind to a Port**: The server is set to listen on port 6379, which is the default port for Redis.
 
-# Passing the first stage
+- **Respond to PING**: The server can respond to a PING command with a PONG.
 
-The entry point for your Redis implementation is in `app/main.js`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
+- **Respond to Multiple PINGs**: The server can handle multiple PING commands concurrently.
 
-```sh
-git add .
-git commit -m "pass 1st stage" # any msg
-git push origin master
+- **Handle Concurrent Clients**: The server uses Node.js's event-driven, non-blocking I/O model, which makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.
+
+- **Implement the ECHO Command**: The server can respond to an ECHO command by sending back the same message.
+
+- **Implement the SET & GET Commands**: The server can store key-value pairs with the SET command and retrieve the value with the GET command.
+
+- **Expiry**: The server can handle key expiry. If a timeout is provided with the SET command, the key will be deleted after the specified time.
+
+## Running the Server
+
+To run the server, execute the following command:
+
+```shell
+node main.js
 ```
 
-That's all!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `node (16)` installed locally
-1. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented
-   in `app/main.js`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+This will start the server and bind it to port 6379. You can then connect to it using a Redis client and execute commands.
